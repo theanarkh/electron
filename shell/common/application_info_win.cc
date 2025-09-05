@@ -21,15 +21,16 @@
 
 namespace electron {
 
-namespace {
-std::wstring g_toast_activator_clsid;
-}  // namespace
-
 const wchar_t kAppUserModelIDFormat[] = L"electron.app.$1";
 
 std::wstring& GetAppUserModelId() {
   static base::NoDestructor<std::wstring> g_app_user_model_id;
   return *g_app_user_model_id;
+}
+
+std::wstring& GetToastActivatorCLSID() {
+  static base::NoDestructor<std::wstring>  g_toast_activator_clsid;
+  return *g_toast_activator_clsid;
 }
 
 std::string GetApplicationName() {
@@ -87,16 +88,16 @@ bool IsRunningInDesktopBridge() {
 }
 
 PCWSTR GetAppToastActivatorCLSID() {
-  if (g_toast_activator_clsid.empty()) {
+  if (GetToastActivatorCLSID().empty()) {
     GUID guid;
     if (SUCCEEDED(::CoCreateGuid(&guid))) {
       wchar_t buf[64] = {0};
       if (StringFromGUID2(guid, buf, std::size(buf)) > 0)
-        g_toast_activator_clsid = buf;
+        GetToastActivatorCLSID() = buf;
     }
   }
 
-  return g_toast_activator_clsid.c_str();
+  return GetToastActivatorCLSID().c_str();
 }
 
 void SetAppToastActivatorCLSID(const std::wstring& clsid) {
