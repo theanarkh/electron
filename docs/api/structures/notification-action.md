@@ -39,10 +39,10 @@ app.whenReady().then(() => {
     }]
   })
 
-  n.on('action', (e, actionIndex, selectionIndex) => {
-    console.log(`User triggered action at index: ${actionIndex}`)
-    if (selectionIndex > 0) {
-      console.log(`User chose selection item '${items[selectionIndex]}'`)
+  n.on('action', (e) => {
+    console.log(`User triggered action at index: ${e.actionIndex}`)
+    if (e.selectionIndex > 0) {
+      console.log(`User chose selection item '${items[e.selectionIndex]}'`)
     }
   })
 
